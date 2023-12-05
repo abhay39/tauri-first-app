@@ -27,8 +27,9 @@ const SignUp = () => {
                 email:email
               })
             })
+            const status=res.status;
             res=await res.json()
-            if(res.status==200){
+            if(status==200){
               toast.success(res.message)
             }else{
               toast.error(res.message)

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import User from './modal/users.js';
 import bcrypt from 'bcryptjs'
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 const PORT=5000;
 const app=express();
@@ -69,20 +70,23 @@ app.post("/api/login",async(req, res) => {
             email: email
         });
         if(checkUser){
-            res.status(400).json({
-                message:"User account is already in use."
-            })
+            const matchPassword=await bcrypt.compare(password,checkUser.password);
+            if(matchPassword){
+                const token=jwt.sign({id:checkUser._id},JWT_SEC,{
+                    expiresIn:"720h"
+                })
+                res.status(200).json({
+                    message:"Successfully Logged in!!",
+                    "token":token
+                })
+            }else{
+                res.status(400).json({
+                    message:"Password is incorrect!!"
+                })
+            }
         }else{
-            const hashedPassword=await bcrypt.hash(password,10);
-            // const hashedUsername=await bcrypt.hash(username,10);
-            const newUser = new User({
-                username: username,
-                email: email,
-                password: hashedPassword
-            })
-            await newUser.save()
-            res.status(200).json({
-                message:"Account created successfully!!!"
+            res.status(400).json({
+                message:"Email is invalid!!"
             })
         }
     }catch(err){

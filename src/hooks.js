@@ -5,12 +5,12 @@ const Authinication=createContext({})
 
 export const MyAuthProvider=({children})=>{
 
-    const [user, setUser] = useState(false);
+    const [token, setToken] = useState(false);
     const [userData, setUserData] = useState("");
     const URL="http://localhost:5000";
 
     return(
-        <Authinication.Provider value={{user,setUser,userData,setUserData,URL}}>
+        <Authinication.Provider value={{token,setToken,userData,setUserData,URL}}>
             {children}
         </Authinication.Provider>
     )
