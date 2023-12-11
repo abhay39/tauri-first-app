@@ -12,6 +12,7 @@ import { MdUpdateDisabled } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { RxCross2 } from "react-icons/rx";
 import HomeDetails from '@/components/HomeDetails';
+import AddIncome from '@/components/AddIncome';
 
 
 
@@ -65,10 +66,10 @@ const page = () => {
     },[token])
 
   return (
-    <div className='bg-[#023047] flex  h-[100%] md:h-[100vh] w-full'>
+    <div className='bg-[#023047]  md:flex max-h-max md:h-[100vh] w-full'>
         
         {/* links here */}
-        <div className={`${isClicked?"bg-[#264653]":""} p-2 md:p-6 shadow-2xl ${isClicked?"md:w-1/4 md:h-[100vh]":""} text-white select-none `}>
+        <div className={` p-2 md:p-6 shadow-2xl ${isClicked?"md:w-1/4 md:h-[100vh]":""} text-white select-none `}>
         {isClicked?(<RxCross2 size={40} color='white' className=' cursor-pointer flex justify-center items-center hover:bg-slate-400  rounded-full p-1' onClick={()=>setIsClicked(!isClicked)}/>):(<IoReorderThree size={40} color='white' className=' cursor-pointer transition ease-in-out duration-700 flex justify-center items-center hover:bg-slate-400 rounded-full p-1' onClick={()=>setIsClicked(!isClicked)}/>)}
 
             <div className={`${isClicked?"flex mt-3 flex-col transition ease-in-out duration-700":"hidden transition ease-in-out duration-700"} `}>
@@ -76,7 +77,7 @@ const page = () => {
 
                 {data.map((item,index)=>{
                     return (
-                        <div key={index} className='bg-[#001d3d] flex items-center p-3 cursor-pointer shadow-xl rounded-md mt-6'>
+                        <div onClick={()=>setIsSelected('addIncome')}  key={index} className='bg-[#001d3d] flex items-center p-3 cursor-pointer shadow-xl rounded-md mt-6'>
                             {item.icon}
                             <p className='ml-2'>{item.title}</p>
                         </div>
@@ -86,8 +87,9 @@ const page = () => {
         </div>
 
         {/* components here */}
-        <div className='p-2 md:p-6'>
+        <div className='p-2 md:p-6 w-full'>
             {isSelected==='home'?<HomeDetails />:null}
+            {isSelected==='addIncome'?<AddIncome />:null}
         </div>
     </div>
   )
