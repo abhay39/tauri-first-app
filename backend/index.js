@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import mongoose from 'mongoose';
 import User from './modal/users.js';
 import bcrypt from 'bcryptjs'
@@ -63,6 +63,23 @@ app.post("/api/register",async(req, res) => {
     }
 })
 
+app.get("/api/getUserDetails/:token",async(req,res)=>{
+    const {token}=req.params;
+    try{
+        const decodedId=jwt.verify(token,JWT_SEC);
+        if(decodedId){
+            const userData=await User.findById(decodedId.id);
+            res.json({"message":userData});
+        }else{
+            res.json({"message":"Invalid token"});
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
 app.post("/api/login",async(req, res) => {
     const {password,email}=req.body;
     try{
@@ -87,6 +104,266 @@ app.post("/api/login",async(req, res) => {
         }else{
             res.status(400).json({
                 message:"Email is invalid!!"
+            })
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
+app.post("/api/addIncome",async(req,res)=>{
+    const {incomeName,incomeAmount,userId}=req.body;
+
+    try{
+        const user=await User.findById(userId);
+        if(user){
+            const referenceId=Number(Math.floor(Math.random() * 999999999999) + 1);
+            const transactionsReceiver={
+                nameOfIncome:incomeName,
+                amount:Number(incomeAmount),
+                dateAdded:new Date().toLocaleDateString(),
+                TimeAdded:new Date().toLocaleTimeString(),
+                type:'credit',
+                referenceId:referenceId,
+            }
+            const updateIncome=await User.findByIdAndUpdate(userId,{
+                $push:{
+                    income:transactionsReceiver
+                }
+            })
+            if(updateIncome){
+                res.status(202).json({
+                    "message":"Income Added Successfully!!"
+                })
+            }else{
+                res.status(403).json({
+                    "message":"Error Adding Income"
+                })
+            }
+        }else{
+            res.status(404).json({
+                "message":"No user found!"
+            })
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
+
+app.post("/api/updateIncome",async(req,res)=>{
+    const {incomeName,incomeAmount,userId,reference}=req.body;
+
+    try{
+        const user=await User.findById(userId);
+        if(user){
+            const referenceId=Number(Math.floor(Math.random() * 999999999999) + 1);
+            
+
+            const updatedIncome = await User.updateOne(
+                {
+                "_id": userId,
+                    "income": {
+                        $elemMatch: { "referenceId": reference }
+                    }
+                },
+                
+                {
+                    $set: {
+                        "income.$.amount": Number(incomeAmount),
+                        "income.$.nameOfIncome": incomeName,
+                        "income.$.dateAdded": new Date().toLocaleDateString(),
+                        "income.$.TimeAdded": new Date().toLocaleTimeString(),
+                    }
+                }
+            );
+
+            if(updatedIncome){
+                res.status(202).json({
+                    "message":"Income Updated Successfully!!"
+                })
+            }else{
+                res.status(403).json({
+                    "message":"Error Updating Income"
+                })
+            }
+            
+        }else{
+            res.status(404).json({
+                "message":"No user found!"
+            })
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
+
+app.delete("/api/deleteIncome",async(req,res)=>{
+    const {userId,reference}=req.body;
+
+    try{
+        const user=await User.findById(userId);
+        if(user){
+            const deletedIncome = await User.updateOne(
+                {
+                  "_id": userId,
+                },
+                {
+                  $pull: {
+                    "income": { "referenceId": reference }
+                  }
+                }
+            );
+
+            if(deletedIncome){
+                res.status(202).json({
+                    "message":"Income Deleted Successfully!!"
+                })
+            }else{
+                res.status(403).json({
+                    "message":"Error Deleting Income!!!"
+                })
+            }
+            
+        }else{
+            res.status(404).json({
+                "message":"No user found!"
+            })
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
+
+app.post("/api/updateExpense",async(req,res)=>{
+    const {incomeName,incomeAmount,userId,reference}=req.body;
+
+    try{
+        const user=await User.findById(userId);
+        if(user){
+            const referenceId=Number(Math.floor(Math.random() * 999999999999) + 1);
+            
+            const updatedIncome = await User.updateOne(
+                {
+                "_id": userId,
+                    "expense": {
+                        $elemMatch: { "referenceId": reference }
+                    }
+                },
+                {
+                    $set: {
+                        "expense.$.amount": Number(incomeAmount),
+                        "expense.$.nameOfExpense": incomeName,
+                        "expense.$.dateAdded": new Date().toLocaleDateString(),
+                        "expense.$.TimeAdded": new Date().toLocaleTimeString(),
+                    }
+                }
+            );
+
+            if(updatedIncome){
+                res.status(202).json({
+                    "message":"Expense Updated Successfully!!"
+                })
+            }else{
+                res.status(403).json({
+                    "message":"Error Updating Expense!!"
+                })
+            }
+            
+        }else{
+            res.status(404).json({
+                "message":"No user found!"
+            })
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
+
+app.delete("/api/deleteExpense",async(req,res)=>{
+    const {userId,reference}=req.body;
+
+    try{
+        const user=await User.findById(userId);
+        if(user){
+            const deletedIncome = await User.updateOne(
+                {
+                  "_id": userId,
+                },
+                {
+                  $pull: {
+                    "expense": { "referenceId": reference }
+                  }
+                }
+            );
+
+            if(deletedIncome){
+                res.status(202).json({
+                    "message":"Expense Deleted Successfully!!"
+                })
+            }else{
+                res.status(403).json({
+                    "message":"Error Deleting Expense!!!"
+                })
+            }
+            
+        }else{
+            res.status(404).json({
+                "message":"No user found!"
+            })
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
+app.post("/api/addExpense",async(req,res)=>{
+    const {expenseName,expenseAmount,userId}=req.body;
+
+    try{
+        const user=await User.findById(userId);
+        if(user){
+            const referenceId=Number(Math.floor(Math.random() * 999999999999) + 1);
+            const transactionsReceiver={
+                nameOfExpense:expenseName,
+                amount:Number(expenseAmount),
+                dateAdded:new Date().toLocaleDateString(),
+                TimeAdded:new Date().toLocaleTimeString(),
+                type:'debit',
+                referenceId:referenceId,
+            }
+            const updateIncome=await User.findByIdAndUpdate(userId,{
+                $push:{
+                    expense:transactionsReceiver
+                }
+            })
+            if(updateIncome){
+                res.status(202).json({
+                    "message":"Expense Added Successfully!!"
+                })
+            }else{
+                res.status(403).json({
+                    "message":"Error Adding Expense"
+                })
+            }
+        }else{
+            res.status(404).json({
+                "message":"No user found!"
             })
         }
     }catch(err){

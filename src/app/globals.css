@@ -19,3 +19,54 @@
 body {
   
 }
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 90%;
+}
+
+td, th {
+  border: 3px solid white;
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  /* background-color: #d16969; */
+}
+
+#gloww{
+  background: red;
+  padding: 4px;
+  text-align: center;
+  border-radius: 15px;
+  animation: glowAnimation 3s infinite alternate;
+}
+@keyframes glowAnimation {
+  0% {
+    opacity: 0.15;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000,
+      0 0 60px #ff0000, 0 0 70px #ff0000;
+  }
+  25%{
+    opacity: 0.25;
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #ff0000, 0 0 80px #ff0000, 0 0 100px #ff0000,
+      0 0 120px #ff0000, 0 0 140px #ff0000;
+  }
+  50%{
+    opacity: 0.5;
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #ff0000, 0 0 80px #ff0000, 0 0 100px #ff0000,
+      0 0 120px #ff0000, 0 0 140px #ff0000;
+  }
+  75%{
+    opacity: 0.75;
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #ff0000, 0 0 80px #ff0000, 0 0 100px #ff0000,
+      0 0 120px #ff0000, 0 0 140px #ff0000;
+  }
+  100% {
+    opacity: 0.75;
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #ff0000, 0 0 80px #ff0000, 0 0 100px #ff0000,
+      0 0 120px #ff0000, 0 0 140px #ff0000;
+  }
+}

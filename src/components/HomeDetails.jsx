@@ -57,7 +57,7 @@ export const options = {
 
 const HomeDetails = () => {
     
-    const {token}=useContext(Authinication);
+    const {token,userData}=useContext(Authinication);
 
     const [time,setTime]=useState();
     setInterval(()=>{
@@ -65,14 +65,24 @@ const HomeDetails = () => {
       setTime(d);
     },1000)
 
-    let income=2000,expense=1000,remaining=4000;
+    let totalIncome=0,totalExpense=0,totalRemaining=0;
+
+    userData?.income?.forEach(element => {
+      totalIncome+=element.amount;
+    });
+
+    userData?.expense?.forEach(element => {
+      totalExpense+=element.amount;
+    });
+
+    totalRemaining=totalIncome-totalExpense;
 
     const data = {
       labels: ['Income', 'Expense', 'Remaining'],
       datasets: [
         {
           
-          data: [income,expense,remaining],
+          data: [totalIncome,totalExpense,totalRemaining],
           backgroundColor: [
             'green',
             'red',
@@ -93,28 +103,46 @@ const HomeDetails = () => {
     };
 
 
+   
+
 
 
   return (
     <div className='text-white md:w-[100%]'>
         <div className='flex  items-center justify-between'>
-          <h1 className='text-2xl font-bold'>{greetingTime(new Date())}, Abhay</h1>
+          <h1 className='text-2xl font-bold'>{greetingTime(new Date())}, {userData?.username}</h1>
+          {
+            totalRemaining<500?(<div id="gloww">
+            {(() => {
+              if (totalRemaining < 500 && totalRemaining > 1) {
+                return <p>{totalRemaining} money is only remaining now... Time to add now!!</p>;
+              } else if (totalRemaining < 0) {
+                return <p>No money left in wallet. Your balance is in negative</p>;
+              } else {
+                return null;
+              }
+            })()}
+          </div>):(null)
+          }
           <p> {new Date().toLocaleDateString()}</p>
+          
         </div>
         <hr className='border-gray-200 mt-1'/>
         
         <div className='mt-5 md:flex justify-between '>
           
           {/* <Chart /> */}
-          <Boxes color={"bg-green-400"} name={"Income"} amount={income}/>
-          <Boxes color={"bg-red-400"} name={"Expense"} amount={expense}/>
-          <Boxes color={"bg-orange-400"} name={"Remaining"} amount={remaining}/>
+          <Boxes color={"bg-green-600"}   totalTransa={userData?.income?.length} name={"Income"}  amount={totalIncome}/>
+
+          <Boxes  totalTransa={userData?.expense?.length} color={"bg-red-600"} name={"Expense"} amount={totalExpense}/>
+          
+          <Boxes color={"bg-orange-600"}  name={"Remaining"} amount={totalRemaining}/>
         </div>
 
         {/* adding charts here */}
         <div className='flex items-center justify-center'>
-          <div className='md:w-[550px] sm:w-[100%] md:h-[450px] sm:h-[100%] cursor-pointer flex items-center justify-center mt-5'>
-            <Pie height={300} width={300} data={data} />
+          <div className='md:w-[550px]  sm:w-[100%] md:h-[400px] sm:h-[100%] cursor-pointer flex items-center justify-center mt-5'>
+            <Pie  data={data} />
           </div>
         </div>
         
