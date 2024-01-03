@@ -60,8 +60,8 @@ const HomeScreen = () => {
 
         <div className='md:flex  justify-between p-6 bg-[#F2FDFF] rounded-lg'>
 
-            <div className='flex flex-col   rounded-md hover:bg-slate-200 cursor-pointer p-2 '>
-                <FaRegClock size={40} color='green'/>
+            <div className='flex flex-col   rounded-md hover:bg-slate-200 cursor-pointer p-2 mt-4 md:mt-0'>
+                <FaRegClock size={40} color='green' className='mt-3'/>
                 <h1 className='text-3xl font-bold'>Remainder</h1>
                 <p className='text-justify'>EXTracker's intelligent reminder function is a standout feature that assists users in staying on top of their financial commitments. Users can set reminders for upcoming bills, subscription renewals, or any other recurring expenses, ensuring they are promptly notified before due dates.</p>
             </div>
@@ -82,10 +82,12 @@ const HomeScreen = () => {
         </div>
 
       
-        <footer className='bg-[#011E2C] text-white p-3 flex justify-between items-center '>
+        <footer className='bg-[#011E2C] text-white p-3 flex justify-between items-center flex-col '>
             <h1>EXTracker</h1>
-            <p>2023 EXTracker &copy; All right reserved</p>
-            <a href="#top"><FaArrowUp size={20} color='black' className='bg-slate-200 rounded-full cursor-pointer'/></a>
+            <div className='flex justify-around items-center w-full'>
+              <p>2023 EXTracker &copy; All right reserved</p>
+              <a href="#top"><FaArrowUp size={20} color='black' className='bg-slate-200 rounded-full cursor-pointer'/></a>
+            </div>
         </footer>
     </div>
   )

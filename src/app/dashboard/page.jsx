@@ -19,6 +19,7 @@ import Transactions from '@/components/Transactions';
 import UpdateIncome from '@/components/UpdateIncome';
 import UpdateExpense from '@/components/UpdateExpense';
 import { SlLogout } from "react-icons/sl";
+import toast from 'react-hot-toast';
 
 
 
@@ -122,6 +123,7 @@ const page = () => {
                     )
                 })}
                 <div onClick={()=>{
+                    toast.success("Logged out successfully!!!")
                     Cookies.remove('token');
                     setToken(null);
                     setUserData(userData)

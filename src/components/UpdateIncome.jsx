@@ -65,19 +65,18 @@ const UpdateIncome = () => {
     }
 
   return (
-    <div className="text-white  w-[100%]">
-        <h1 className='text-3xl font-bold'>Income Transactions</h1>
+    <div className="text-white min-h-screen  w-[100%]">
+        <h1 className='text-3xl   font-bold w-full'>Income Transactions</h1>
 
         <hr />
         <div className='flex flex-col items-center justify-center mt-6'>
             {userData.income.length>0?
             (<table>
-                <h1 className="text-xl font-bold">Income Transactions</h1>
                 <tr>
                 <th>S.No</th>
                 <th>Income Name</th>
                 <th>Income Amount</th>
-                <th>Income Date & Time</th>
+                <th className='hidden md:table-cell'>Income Date & Time</th>
                 <th>Action</th>
             </tr>
                 {userData.income.map((item,index)=>{
@@ -86,7 +85,7 @@ const UpdateIncome = () => {
                             <td>{index+1}</td>
                             <td>{item.nameOfIncome}</td>
                             <td>&#8377;. {item.amount}/-</td>
-                            <td>{item.dateAdded} & {item.TimeAdded}</td>
+                            <td className='hidden md:table-cell'>{item.dateAdded} & {item.TimeAdded}</td>
                             <td>
                                 <button className='bg-orange-400 mr-1 p-1 rounded-md' onClick={()=>handleOpenModel(item)}><FaRegEdit  size={20}/></button>
                               

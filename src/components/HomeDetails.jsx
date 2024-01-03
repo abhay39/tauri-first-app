@@ -109,10 +109,10 @@ const HomeDetails = () => {
 
   return (
     <div className='text-white md:w-[100%]'>
-        <div className='flex  items-center justify-between'>
+        <div className='flex flex-col md:flex-row  items-center justify-between'>
           <h1 className='text-2xl font-bold'>{greetingTime(new Date())}, {userData?.username}</h1>
           {
-            totalRemaining<500?(<div id="gloww">
+            totalRemaining<500?(<div className=' md:flex mt-2 mb-2' id="gloww">
             {(() => {
               if (totalRemaining < 500 && totalRemaining > 1) {
                 return <p>{totalRemaining} money is only remaining now... Time to add now!!</p>;
@@ -124,7 +124,7 @@ const HomeDetails = () => {
             })()}
           </div>):(null)
           }
-          <p> {new Date().toLocaleDateString()}</p>
+          <p className='hidden md:flex'> {new Date().toLocaleDateString()}</p>
           
         </div>
         <hr className='border-gray-200 mt-1'/>
