@@ -7,8 +7,8 @@ export const MyAuthProvider=({children})=>{
 
     const [token, setToken] = useState(false);
     const [userData, setUserData] = useState("");
-    const URL="http://localhost:5000";
-    // const URL="https://exttrackerbackend.vercel.app";
+    // const URL="http://localhost:5000";
+    const URL="https://exttrackerbackend.vercel.app";
 
     return(
         <Authinication.Provider value={{token,setToken,userData,setUserData,URL}}>
