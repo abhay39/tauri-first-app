@@ -21,7 +21,9 @@ const AddExpense = () => {
             body: JSON.stringify({
                 expenseName:addExpense,
                 expenseAmount:addExpenseAmount,
-                userId:userData._id
+                userId:userData._id,
+                dateAdded:new Date().toLocaleDateString(),
+                TimeAdded:new Date().toLocaleTimeString()
             })
         })
         const status=res.status;

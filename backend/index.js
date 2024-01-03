@@ -1,15 +1,32 @@
 import express, { response } from 'express';
-import mongoose from 'mongoose';
+import mongoose, { get } from 'mongoose';
 import User from './modal/users.js';
 import bcrypt from 'bcryptjs'
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer'
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const FRONTEND_URL=process.env.FRONTEND_URL;
 
 const PORT=5000;
 const app=express();
 const JWT_SEC="356d0b7a7926090a4e6768342b3da7f7810f194c4ee3b757d1e517fcaf59085d" ;
 const MONGOURI="mongodb+srv://abhaytechhub:abhaytechhub@cluster0.fykwmbk.mongodb.net/trackExpenses?retryWrites=true&w=majority"
 app.use(cors());
+
+const transporter = nodemailer.createTransport({
+    host: 'gmail',
+    auth: {
+        user: 'abhayguptaak39@gmail.com',
+        pass: 'cnxnswlxhsgpsdtb'
+    },
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+});
 
 app.use(express.json({
     limit:'10mb'
@@ -25,7 +42,7 @@ const connect=async()=>{
     }
 }
 
-await connect()
+
 
 app.get("/",(req, res) => {
     res.json({
@@ -114,7 +131,7 @@ app.post("/api/login",async(req, res) => {
 })
 
 app.post("/api/addIncome",async(req,res)=>{
-    const {incomeName,incomeAmount,userId}=req.body;
+    const {incomeName,incomeAmount,userId,dateAdded,TimeAdded}=req.body;
 
     try{
         const user=await User.findById(userId);
@@ -123,8 +140,8 @@ app.post("/api/addIncome",async(req,res)=>{
             const transactionsReceiver={
                 nameOfIncome:incomeName,
                 amount:Number(incomeAmount),
-                dateAdded:new Date().toLocaleDateString(),
-                TimeAdded:new Date().toLocaleTimeString(),
+                dateAdded:dateAdded,
+                TimeAdded:TimeAdded,
                 type:'credit',
                 referenceId:referenceId,
             }
@@ -156,7 +173,7 @@ app.post("/api/addIncome",async(req,res)=>{
 
 
 app.post("/api/updateIncome",async(req,res)=>{
-    const {incomeName,incomeAmount,userId,reference}=req.body;
+    const {incomeName,incomeAmount,userId,reference,dateAdded,TimeAdded}=req.body;
 
     try{
         const user=await User.findById(userId);
@@ -176,8 +193,8 @@ app.post("/api/updateIncome",async(req,res)=>{
                     $set: {
                         "income.$.amount": Number(incomeAmount),
                         "income.$.nameOfIncome": incomeName,
-                        "income.$.dateAdded": new Date().toLocaleDateString(),
-                        "income.$.TimeAdded": new Date().toLocaleTimeString(),
+                        "income.$.dateAdded": dateAdded,
+                        "income.$.TimeAdded": TimeAdded,
                     }
                 }
             );
@@ -246,7 +263,7 @@ app.delete("/api/deleteIncome",async(req,res)=>{
 
 
 app.post("/api/updateExpense",async(req,res)=>{
-    const {incomeName,incomeAmount,userId,reference}=req.body;
+    const {incomeName,incomeAmount,userId,reference,dateAdded,TimeAdded}=req.body;
 
     try{
         const user=await User.findById(userId);
@@ -264,8 +281,8 @@ app.post("/api/updateExpense",async(req,res)=>{
                     $set: {
                         "expense.$.amount": Number(incomeAmount),
                         "expense.$.nameOfExpense": incomeName,
-                        "expense.$.dateAdded": new Date().toLocaleDateString(),
-                        "expense.$.TimeAdded": new Date().toLocaleTimeString(),
+                        "expense.$.dateAdded": dateAdded,
+                        "expense.$.TimeAdded": TimeAdded
                     }
                 }
             );
@@ -333,7 +350,7 @@ app.delete("/api/deleteExpense",async(req,res)=>{
 })
 
 app.post("/api/addExpense",async(req,res)=>{
-    const {expenseName,expenseAmount,userId}=req.body;
+    const {expenseName,expenseAmount,userId,TimeAdded,dateAdded}=req.body;
 
     try{
         const user=await User.findById(userId);
@@ -342,8 +359,8 @@ app.post("/api/addExpense",async(req,res)=>{
             const transactionsReceiver={
                 nameOfExpense:expenseName,
                 amount:Number(expenseAmount),
-                dateAdded:new Date().toLocaleDateString(),
-                TimeAdded:new Date().toLocaleTimeString(),
+                dateAdded:dateAdded,
+                TimeAdded:TimeAdded,
                 type:'debit',
                 referenceId:referenceId,
             }
@@ -373,6 +390,73 @@ app.post("/api/addExpense",async(req,res)=>{
     }
 })
 
+app.post("/api/forgotPassword",async(req,res)=>{
+    const {email}=req.body;
+    try{
+        const getId=await User.findOne({
+            email:email
+        })
+        if(getId){
+            const token=jwt.sign({id:getId._id},JWT_SEC,{
+                expiresIn:"720h"
+            })
+
+            const updateUser=await User.findByIdAndUpdate(getId._id,{
+                resetPasswordToken:token,
+                resetPasswordExpires:Date.now()+3600000
+            })
+            if(updateUser){
+                const mailOptions={
+                    from:"abhayguptaak39@gmail.com",
+                    to:email,
+                    subject:"Reset Password",
+                    text:`Click on the link below to reset your password: ${FRONTEND_URL}/resetPassword/${token}`
+                }
+                transporter.sendMail(mailOptions,(err,info)=>{
+                    if(err){
+                        // console.log(err)
+                    }else{
+                        // console.log(info)
+                    }
+                })
+                res.status(202).json({
+                    "message":"Password resent link is successfully sent to your Email. Kindly Check your email!!"
+                })
+            }
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
+await connect()
+
+app.post("/api/updatePassword",async(req,res)=>{
+    
+    const {token,password}=req.body;
+    try{
+        const decodedId=jwt.verify(token,JWT_SEC);
+        if(decodedId){
+            const hashedPassword=await bcrypt.hash(password,10);
+            const userData=await User.findByIdAndUpdate(decodedId.id,{
+                resetPasswordToken:"",
+                resetPasswordExpires:"",
+                password:hashedPassword
+            });
+            res.status(202).json({"message":"password updated successfully!!!"});
+        }else{
+            res.status(403).json({"message":"Invalid token"});
+        }
+    }catch(err){
+        res.status(403).json({
+            message: err.message
+        })
+    }
+})
+
 app.listen(PORT,()=>{
+    // console.log(FRONTEND_URL)
     console.log(`Server listening on ${PORT}`)
 })

@@ -53,7 +53,9 @@ const UpdateExpense = () => {
         },
         body:JSON.stringify({
           userId:userData._id,
-          reference:item.referenceId
+          reference:item.referenceId,
+          dateAdded:new Date().toLocaleDateString(),
+          TimeAdded:new Date().toLocaleTimeString()
         })
       })
       let status=res.status

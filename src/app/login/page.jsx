@@ -73,9 +73,11 @@ const Login = () => {
             password={password}
           />
           <br />
+          <Link href="/resetPassword">
           <p className="text-left mb-2 cursor-pointer font-bold transition hover:text-[#023047]">
             Forgot password?
           </p>
+          </Link>
           <button
             disabled={isDisabled}
             onClick={handleLoginUp}

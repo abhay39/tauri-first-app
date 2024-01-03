@@ -22,7 +22,9 @@ const AddIncome = () => {
             body: JSON.stringify({
                 incomeName:addIncome,
                 incomeAmount:addIncomeAmount,
-                userId:userData._id
+                userId:userData._id,
+                dateAdded:new Date().toLocaleDateString(),
+                TimeAdded:new Date().toLocaleTimeString()
             })
         })
         const status=res.status;

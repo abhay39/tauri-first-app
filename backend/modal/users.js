@@ -18,6 +18,14 @@ const UserSchema=new mongoose.Schema({
     },
     income:[],
     expense:[],
+    resetPasswordToken:{
+        type:String,
+        default:""
+    },
+    resetPasswordExpires:{
+        type:String,
+        default:""
+    }
 },{timestamps:true})
 
 const User=mongoose.model("User",UserSchema);

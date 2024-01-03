@@ -3,6 +3,7 @@ import './globals.css'
 import { MyAuthProvider } from '@/hooks'
 import { Toaster } from "react-hot-toast";
 import Head from 'next/head';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const poppins = Poppins({ subsets: ['latin'],weight:['400','500','600','700'] })
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
       <body className={poppins.className}>
         <Toaster position="top-center " />
         <MyAuthProvider>
+          <SpeedInsights/>  
           {children}
         </MyAuthProvider>
       </body>

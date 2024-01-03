@@ -4,16 +4,15 @@ import React,{useContext} from 'react'
 const Transactions = () => {
     const {userData,setUserData}=useContext(Authinication)
   return (
-    <div className="text-white w-full flex items-center justify-center flex-col">
+    <div className="text-white w-full min-h-screen flex items-center  flex-col">
         <h1 className='text-3xl font-bold'>Transactions</h1>
 
         <hr />
-        <div className='flex flex-col items-center justify-center mt-6 ' >
+        <div className='flex flex-col w-full items-center justify-center mt-6 ' >
         <h1 className="text-xl w-full font-bold text-center">Income Transactions</h1>
             {userData.income.length>0?
             (
                 <table className=''>
-                
                 <tr>
                 <th>S.No</th>
                 <th>Income Name</th>
@@ -38,7 +37,7 @@ const Transactions = () => {
         </div>
 
 
-        <div className='flex flex-col items-center justify-center mt-6'>
+        <div className='flex flex-col w-full items-center justify-center mt-6'>
             <h1 className="text-xl font-bold">Expense Transactions</h1>
             {userData.expense.length>0?
             (<table>
