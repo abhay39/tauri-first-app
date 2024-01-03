@@ -9,7 +9,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const FRONTEND_URL=process.env.FRONTEND_URL;
 
 const PORT=5000;
 const app=express();
@@ -410,7 +409,7 @@ app.post("/api/forgotPassword",async(req,res)=>{
                     from:"abhayguptaak39@gmail.com",
                     to:email,
                     subject:"Reset Password",
-                    text:`Click on the link below to reset your password: ${FRONTEND_URL}/resetPassword/${token}`
+                    html:`Click on the link below to reset your password: ${process.env.FRONTEND_URL}/resetPassword/${token}`
                 }
                 transporter.sendMail(mailOptions,(err,info)=>{
                     if(err){
