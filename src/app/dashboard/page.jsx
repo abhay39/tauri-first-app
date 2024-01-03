@@ -3,7 +3,7 @@ import Authinication from '@/hooks';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
-import { FaPlus } from "react-icons/fa";
+import { FaPlus,FaReg } from "react-icons/fa";
 import {Poppins} from 'next/font/google'
 import { IoReorderThree } from "react-icons/io5";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
@@ -110,16 +110,28 @@ const page = () => {
 
                 {data.map((item,index)=>{
                     return (
-                        <div onClick={()=>{
+                        
+                            item.val==='logout'?(null):(<div onClick={()=>{
                                 setIsSelected(item.val)
                                 setIsClicked(!isClicked)
                         }}  key={index} className={`${isSelected==item.val?('bg-[#f51d5e]'):('bg-[#001d3d]')} flex items-center p-3 cursor-pointer shadow-xl rounded-md mt-6`}>
                             {item.icon}
                             <p className='ml-2'>{item.title}</p>
-                        </div>
+                        </div>)
+                        
                     )
                 })}
+                <div onClick={()=>{
+                    Cookies.remove('token');
+                    setToken(null);
+                    setUserData(userData)
+                    route.replace("/")
+                }}  className={`bg-red-600 flex items-center p-3 cursor-pointer shadow-xl rounded-md mt-6`}>
+                    {data[6].icon}
+                    <p className='ml-2'>{data[6].title}</p>
+                </div>
             </div>
+            
             
         </div>
 

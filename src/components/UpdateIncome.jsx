@@ -2,7 +2,8 @@ import Authinication from '@/hooks'
 import React,{useContext, useState} from 'react'
 import toast from 'react-hot-toast'
 import { RxCrossCircled } from "react-icons/rx";
-
+import { FaPlus,FaRegEdit  } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const UpdateIncome = () => {
     const {userData,URL}=useContext(Authinication)
@@ -64,7 +65,7 @@ const UpdateIncome = () => {
     }
 
   return (
-    <div className="text-white h-[89vh] w-[100%]">
+    <div className="text-white  w-[100%]">
         <h1 className='text-3xl font-bold'>Income Transactions</h1>
 
         <hr />
@@ -74,7 +75,6 @@ const UpdateIncome = () => {
                 <h1 className="text-xl font-bold">Income Transactions</h1>
                 <tr>
                 <th>S.No</th>
-                <th>Ref.No.</th>
                 <th>Income Name</th>
                 <th>Income Amount</th>
                 <th>Income Date & Time</th>
@@ -84,14 +84,13 @@ const UpdateIncome = () => {
                     return(
                         <tr key={index}>
                             <td>{index+1}</td>
-                            <td>{item.referenceId}</td>
                             <td>{item.nameOfIncome}</td>
                             <td>&#8377;. {item.amount}/-</td>
                             <td>{item.dateAdded} & {item.TimeAdded}</td>
                             <td>
-                                <button className='bg-orange-400 p-1 rounded-md' onClick={()=>handleOpenModel(item)}>Update</button>
-                                <br />
-                                <button onClick={()=>deleteIncome(item)} className='bg-red-400 rounded-md p-1 mt-1'>Delete</button>
+                                <button className='bg-orange-400 mr-1 p-1 rounded-md' onClick={()=>handleOpenModel(item)}><FaRegEdit  size={20}/></button>
+                              
+                                <button onClick={()=>deleteIncome(item)} className='bg-red-400 rounded-md p-1 mt-1'><MdDelete  size={20}/> </button>
                             </td>
                         </tr>
                     )

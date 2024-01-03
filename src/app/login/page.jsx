@@ -22,6 +22,7 @@ const Login = () => {
     document.cookie = cookieString;
   }
 
+
   const handleLoginUp = async () => {
     try {
       let res = await fetch(`${URL}/api/login`, {
@@ -51,7 +52,7 @@ const Login = () => {
   const isDisabled = !password || !email;
 
   return (
-    <div className="bg-[#023047] h-[100vh] items-center justify-center flex flex-col">
+    <div className="bg-[#023047] min-h-screen md:h-[100vh] items-center justify-center flex flex-col">
       <div className="text-center text-red-500 shadow-2xl bg-slate-200 p-5 rounded-lg">
         <h2 className="text-3xl font-bold select-none">Welcome back!</h2>
         <p className="text-base select-none">Please login to continue</p>

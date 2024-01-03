@@ -43,7 +43,7 @@ const SignUp = () => {
     const isDisabled=!username || !password || !email;
 
   return (
-    <div className='bg-[#023047] h-[100vh] items-center justify-center flex flex-col'>
+    <div className='bg-[#023047] min-h-screen md:h-[100vh] items-center justify-center flex flex-col'>
       <div className='text-center text-red-500 shadow-2xl bg-slate-200 p-5 rounded-lg'>
       <ToastContainer />
         <h2 className='text-3xl font-bold'>Register an account!</h2>
@@ -58,7 +58,9 @@ const SignUp = () => {
           <br />
           
           <button disabled={isDisabled} onClick={handleSignUp} className={`p-2 ${isDisabled?"bg-gray-500":"bg-green-600"} text-white rounded-lg mb-2 w-full text-xl font-semibold`}>Sign up</button>
-          <p className='text-left mb-2 cursor-pointer font-bold transition text-gray-600 '>Already have an account? <Link className='hover:text-[#470211] text-gray-900' href={"/"}>Login</Link></p>
+          <p className='text-left mb-2 cursor-pointer font-bold transition text-gray-600 select-none'>Already have an account? 
+            <button><Link className='hover:text-[#470211] text-gray-900' href={"/login"}>Login</Link></button>
+          </p>
         </div>
       </div>
     </div>

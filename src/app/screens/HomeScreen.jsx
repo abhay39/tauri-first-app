@@ -1,22 +1,30 @@
 import HeroSection from '@/components/HeroSection';
 import Remainder from '@/components/Remainder';
-import React,{useState} from 'react'
+import React,{useLayoutEffect, useState} from 'react'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa6";
 import { LuMessagesSquare } from "react-icons/lu";
 import { ImCross } from "react-icons/im";
 import { FaArrowUp } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 
 
 const HomeScreen = () => {
+  const route=useRouter();
     
     const [showNav,setShowNav]=useState(false);
+    const [tokensss,setTokennnns]=useState(false);
     
     const handleHamBurg=()=>{
         setShowNav(!showNav);
     }
+    useLayoutEffect(()=>{
+      const t=Cookies.get('token');
+      setTokennnns(t)
+    },[tokensss])
 
   return (
     <div className=''>
@@ -24,17 +32,17 @@ const HomeScreen = () => {
       <h1 className='font-bold text-3xl cursor-pointer'>
         Ex<span className='font-thin'>Tracker</span>
       </h1>
-      <nav id='navBars'>
+      <nav id='navBars' className='select-none'>
         <ul className={`${showNav ? ' absolute top-16 left-0  flex flex-col items-start justify-start  bg-slate-200 rounded-md p-2 w-[100%]' : 'hidden'} md:flex md:items-center items-start `}>
-            <li className='cursor-pointer'>Home</li>
-            <li className='cursor-pointer md:ml-10'>Dashboard</li>
-            <li className='cursor-pointer md:ml-10'>About Us</li>
-            <li className='cursor-pointer md:ml-10'>Contact Us</li>
+            <li className='cursor-pointer' onClick={()=>route.push("/")}>Home</li>
+            {tokensss && <li className='cursor-pointer md:ml-10' onClick={()=>route.replace("/dashboard")}>Dashboard</li>}
+            <li onClick={()=>route.push("/about")}  className='cursor-pointer md:ml-10'>About Us</li>
+            <li onClick={()=>route.push("/contact")} className='cursor-pointer md:ml-10'>Contact Us</li>
             <li>
-                <button className='md:ml-10 bg-green-500 p-2 w-24 border border-black hover:bg-green-700 hover:text-white rounded-full'>
+                <button onClick={()=>route.replace("/login")}  className='md:ml-10 bg-green-500 p-2 w-24 border border-black hover:bg-green-700 hover:text-white rounded-full'>
                     Login
                 </button>
-                <button className='md:ml-10 ml-3 sm:mt-2 p-2 w-24 border border-black rounded-full'>
+                <button onClick={()=>route.replace("/signup")} className='md:ml-10 ml-3 sm:mt-2 p-2 w-24 border border-black rounded-full'>
                 Register
                 </button>
             </li>

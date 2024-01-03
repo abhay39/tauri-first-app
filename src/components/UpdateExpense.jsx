@@ -2,6 +2,8 @@ import Authinication from '@/hooks'
 import React,{useContext, useState} from 'react'
 import toast from 'react-hot-toast'
 import { RxCrossCircled } from "react-icons/rx";
+import { FaPlus,FaRegEdit  } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 
 const UpdateExpense = () => {
@@ -74,8 +76,7 @@ const UpdateExpense = () => {
                 <h1 className="text-xl font-bold">Expenses Transactions</h1>
                 <tr>
                 <th>S.No</th>
-                <th>Ref.No.</th>
-                <th>Expense Name</th>
+                <th >Expense Name</th>
                 <th>Expense Amount</th>
                 <th>Expense Date & Time</th>
                 <th>Action</th>
@@ -84,14 +85,15 @@ const UpdateExpense = () => {
                     return(
                         <tr key={index}>
                             <td>{index+1}</td>
-                            <td>{item.referenceId}</td>
                             <td>{item.nameOfExpense}</td>
                             <td>&#8377;. {item.amount}/-</td>
                             <td>{item.dateAdded} & {item.TimeAdded}</td>
                             <td>
-                                <button className='bg-orange-400 p-1 rounded-md' onClick={()=>handleOpenModel(item)}>Update</button>
-                                <br />
-                                <button onClick={()=>deleteExpense(item)} className='bg-red-400 rounded-md p-1 mt-1'>Delete</button>
+                                <button className='bg-orange-600 mr-1 p-1 rounded-md' onClick={()=>handleOpenModel(item)}>
+                                  <FaRegEdit  size={20}/>
+                                </button>
+                               
+                                <button onClick={()=>deleteExpense(item)} className='bg-red-800 rounded-md p-1 mt-1'><MdDelete  size={20}/></button>
                             </td>
                         </tr>
                     )

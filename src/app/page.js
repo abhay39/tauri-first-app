@@ -1,5 +1,4 @@
 "use client"
-import Login from '@/components/Login'
 import Authinication from '@/hooks'
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -17,8 +16,7 @@ const page = () => {
 
   return (
     <>
-      {token?(route.replace("/dashboard")):(<Login />)}
-      {/* <HomeScreen /> */}
+      {token?(route.replace("/dashboard")):(<HomeScreen />)}
     </>
   )
 }
