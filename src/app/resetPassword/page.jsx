@@ -28,6 +28,7 @@ const Login = () => {
       });
       const status=res.status;
       res = await res.json();
+      // console.log(res)
       if (status == 202) {
         toast.success(res.message);
         route.replace("/")

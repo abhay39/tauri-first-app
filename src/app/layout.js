@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head>
-        <link rel="icon" type="image/png" sizes="48x48" href="/icon.png" />
+        <link rel="icon" type="image/png"  href="/icon.ico" />
       </Head>
       <body className={poppins.className}>
         <Toaster position="top-center " />
