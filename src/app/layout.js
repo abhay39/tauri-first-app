@@ -9,7 +9,7 @@ const poppins = Poppins({ subsets: ['latin'],weight:['400','500','600','700'] })
 
 export const metadata = {
   title: 'ExTracker',
-  description: 'ExTracker is a software for the daily managment of income and expense',
+  description: 'ExTracker is a software for the daily management of income and expense',
 }
 
 export default function RootLayout({ children }) {

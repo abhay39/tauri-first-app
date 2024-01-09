@@ -6,7 +6,7 @@ import 'jspdf-autotable'
 
 
 const Transactions = () => {
-    const {userData,setUserData}=useContext(Authinication)
+    const {userData}=useContext(Authinication)
 
     const handleDownload=()=>{
         const doc = new jsPDF()
