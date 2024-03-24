@@ -173,6 +173,7 @@ const HomeDetails = () => {
         {/* adding charts here */}
         <div className='flex items-center justify-center'>
           <div className='w-full  md:h-[500px] cursor-pointer flex items-center justify-center mt-5'>
+          <h1>Transactions chart</h1>
             <Line
               data={data} 
               options={config}
