@@ -86,7 +86,7 @@ const page = () => {
         if(token){
             getDetailsOfUser()
         }
-    },[token,userData])
+    },[token])
 
 
 
@@ -94,16 +94,16 @@ const page = () => {
     const getDetailsOfUser=async()=>{
         let res=await fetch(`${URL}/api/getUserDetails/${token}`);
         res= await res.json();
-        setUserData(res.message);
+        setUserData(res.userData);
     }
 
 
 
   return (
-    <div className='bg-[#023047] w-[100%]  md:flex md:h-[100vh]'>
+    <div className='bg-[#023047]   md:flex min-h-screen'>
         
         {/* links here */}
-        <div className={` p-2 md:p-6 shadow-2xl ${isClicked?"md:w-1/4 md:h-[100vh]":""} text-white select-none `}>
+        <div className={` p-2 md:p-6 shadow-2xl ${isClicked?"md:w-1/4 min-h-screen":""} text-white select-none `}>
         {isClicked?(<RxCross2 size={40} color='white' className=' cursor-pointer flex justify-center items-center hover:bg-slate-400  rounded-full p-1' onClick={()=>setIsClicked(!isClicked)}/>):(<IoReorderThree size={40} color='white' className=' cursor-pointer transition ease-in-out duration-700 flex justify-center items-center hover:bg-slate-400 rounded-full p-1' onClick={()=>setIsClicked(!isClicked)}/>)}
 
             <div className={`${isClicked?"flex mt-3 flex-col transition ease-in-out duration-700":"hidden transition ease-in-out duration-700"} `}>

@@ -79,22 +79,75 @@ app.post("/api/register",async(req, res) => {
     }
 })
 
-app.get("/api/getUserDetails/:token",async(req,res)=>{
-    const {token}=req.params;
-    try{
-        const decodedId=jwt.verify(token,JWT_SEC);
-        if(decodedId){
-            const userData=await User.findById(decodedId.id);
-            res.json({"message":userData});
-        }else{
-            res.json({"message":"Invalid token"});
+app.get("/api/getUserDetails/:token", async (req, res) => {
+    const { token } = req.params;
+    try {
+        const decodedId = jwt.verify(token, JWT_SEC);
+        if (decodedId) {
+            const userData = await User.findById(decodedId.id).select("-password");
+
+            function calculateTotal(userData) {
+                const total = {
+                    income: {},
+                    expenses: {}
+                };
+            
+                userData.income.forEach(incomeItem => {
+                    const date = new Date(incomeItem.dateAdded);
+                    const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                    if (!total.income[monthYear]) {
+                        total.income[monthYear] = 0;
+                    }
+                    total.income[monthYear] += incomeItem.amount;
+                });
+            
+                userData.expense.forEach(expenseItem => {
+                    const date = new Date(expenseItem.dateAdded);
+                    const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                    if (!total.expenses[monthYear]) {
+                        total.expenses[monthYear] = 0;
+                    }
+                    total.expenses[monthYear] += expenseItem.amount;
+                });
+            
+                return total;
+            }
+
+            function displayTotalInDashboard(userData) {
+                const total = calculateTotal(userData);
+                const monthNames = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                const formattedData = monthNames.map((monthName, index) => {
+                    const monthIndex = index + 1; // Adjust to 1-based index
+                    const monthYear = `${monthIndex}/${new Date().getFullYear()}`;
+                    return {
+                        month: monthName,
+                        income: total.income[monthYear] || 0,
+                        expenses: total.expenses[monthYear] || 0
+                    };
+                });
+                return formattedData;
+            }
+
+            const userDetails = {
+                message: "User details fetched successfully",
+                userData: userData,
+                financialData: displayTotalInDashboard(userData)
+            };
+
+            res.json(userDetails);
+        } else {
+            res.json({ "message": "Invalid token" });
         }
-    }catch(err){
+    } catch (err) {
         res.status(403).json({
             message: err.message
-        })
+        });
     }
-})
+});
+
 
 app.post("/api/login",async(req, res) => {
     const {password,email}=req.body;

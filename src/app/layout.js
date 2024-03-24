@@ -18,6 +18,8 @@ export default function RootLayout({ children }) {
       <Head>
         <link rel="icon" type="image/png"  href="/icon.ico" />
       </Head>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2244249864037808"
+     crossorigin="anonymous"></script>
       <body className={poppins.className}>
         <Toaster position="top-center " />
         <MyAuthProvider>
